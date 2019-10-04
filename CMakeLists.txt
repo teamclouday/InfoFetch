@@ -1,0 +1,50 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
+PROJECT(InfoFetch VERSION 1.0.0 LANGUAGES CXX)
+
+IF(WIN32)
+MESSAGE("Now prepraring for Windows")
+ELSE()
+MESSAGE(FATAL "This program only compiles on Windows platform!")
+ENDIF()
+
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -Wall")
+ADD_DEFINITIONS(-DMY_ROOT_DIR="${CMAKE_SOURCE_DIR}")
+
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}")
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}")
+
+IF(NOT EXISTS "${CMAKE_SOURCE_DIR}/external/external.zip")
+EXECUTE_PROCESS(
+    COMMAND git pull origin master
+)
+ENDIF()
+
+IF(NOT EXISTS "${CMAKE_SOURCE_DIR}/external/libcurl")
+EXECUTE_PROCESS(
+    COMMAND tar -xf ${CMAKE_SOURCE_DIR}/external/external.zip -C ${CMAKE_SOURCE_DIR}/external
+)
+ENDIF()
+
+IF(NOT EXISTS "${CMAKE_SOURCE_DIR}/libcurl.dll")
+EXECUTE_PROCESS(
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/external/libcurl/bin/libcurl.dll ${CMAKE_SOURCE_DIR}
+)
+ENDIF()
+
+INCLUDE_DIRECTORIES(
+    "${CMAKE_SOURCE_DIR}/include/"
+    "${CMAKE_SOURCE_DIR}/external/libcurl/include/"
+)
+
+LINK_DIRECTORIES(
+    "${CMAKE_SOURCE_DIR}/external/libcurl/lib/"
+)
+
+FILE(GLOB_RECURSE SRC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+
+ADD_EXECUTABLE(Run ${SRC_FILES})
+
+TARGET_LINK_LIBRARIES(Run
+    libcurl_imp
+)

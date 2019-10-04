@@ -1,5 +1,7 @@
+external/*
+!external/external.zip
 build/*
-*.txt
 *.exe
 *.pdb
 *.ilk
+*.dll
