@@ -1,6 +1,7 @@
 external/*
 !external/external.zip
 build/*
+.vscode/*
 *.exe
 *.pdb
 *.ilk
