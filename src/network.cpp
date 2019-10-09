@@ -12,6 +12,8 @@ Website::~Website()
 
 bool Website::open(const std::string& url)
 {
+    this->html.clear();
+    this->html.resize(0);
     this->htmlBuffer.clear();
     this->htmlBuffer.resize(0);
     CURLcode res;
@@ -21,30 +23,141 @@ bool Website::open(const std::string& url)
     curl_easy_setopt(this->curl, CURLOPT_WRITEDATA, &this->htmlBuffer);
     curl_easy_setopt(this->curl, CURLOPT_HTTPHEADER, header);
     curl_easy_setopt(this->curl, CURLOPT_FOLLOWLOCATION, 1L);
-    curl_easy_setopt(this->curl, CURLOPT_REDIR_PROTOCOLS, "http");
+    curl_easy_setopt(this->curl, CURLOPT_MAXREDIRS, 3L);
     curl_easy_setopt(this->curl, CURLOPT_URL, url.c_str());
     res = curl_easy_perform(this->curl);
     curl_slist_free_all(header);
 
     if(res != CURLE_OK)
-        std::cerr << "Error: " << curl_easy_strerror(res) << std::endl;
+    {
+        std::wstring message = L"网络连接错误: ";
+        message += convert2wstring(std::string(curl_easy_strerror(res)));
+        MessageBox(NULL, message.c_str(), L"InfoFetch Error", MB_OK | MB_ICONWARNING);
+        return false;
+    }
 
-    std::cout << this->htmlBuffer << std::endl;
-    try{
-        // try to convert from GBK(936 is the code page for simplified Chinese) to UTF-8
-        // mainly for chinese websites
-        std::wstring temp;
-        std::wstring_convert<std::codecvt_byname<wchar_t, char, std::mbstate_t>> cvt1(new std::codecvt_byname<wchar_t, char, std::mbstate_t>(".936"));
-        temp = cvt1.from_bytes(this->htmlBuffer);
-        std::wstring_convert<std::codecvt_utf8<wchar_t>> cvt2;
-        std::string decoded;
-        decoded = cvt2.to_bytes(temp);
-        if(!decoded.length())
-        {
-            throw 1;
-        }
-        this->htmlBuffer = decoded;
-    }catch(...){}
+    this->html = this->decodeWebPage(this->htmlBuffer);
+    if(!this->html.length())
+        return false;
 
     return true;
+}
+
+std::string Website::decodeWebPage(const std::string& byteStream)
+{
+    // First try to convert to UTF-8
+    std::wstring wtemp;
+    std::string temp;
+    int size = MultiByteToWideChar(CP_UTF8, 0, byteStream.c_str(), -1, NULL, 0);
+    if(!size)
+    {
+        std::wstring message = L"编码转换错误(MultiByteToWideChar), 错误码: ";
+        std::stringstream sstr;
+        sstr << GetLastError();
+        message += convert2wstring(sstr.str());
+        MessageBox(NULL, message.c_str(), L"InfoFetch Error", MB_OK | MB_ICONWARNING);
+        return "";
+    }
+    else
+    {
+        wtemp.resize(size*sizeof(wchar_t));
+        MultiByteToWideChar(CP_UTF8, 0, byteStream.c_str(), -1, (LPWSTR)wtemp.c_str(), size);
+        size = WideCharToMultiByte(CP_UTF8, 0, wtemp.c_str(), -1, NULL, 0, NULL, NULL);
+        if(!size)
+        {
+            std::wstring message = L"编码转换错误(WideCharToMultiByte), 错误码: ";
+            std::stringstream sstr;
+            sstr << GetLastError();
+            message += convert2wstring(sstr.str());
+            MessageBox(NULL, message.c_str(), L"InfoFetch Error", MB_OK | MB_ICONWARNING);
+            return "";
+        }
+        else
+        {
+            temp.resize(size);
+            WideCharToMultiByte(CP_UTF8, 0, wtemp.c_str(), -1, (LPSTR)temp.c_str(), size, NULL, NULL);
+        }
+    }
+    // Read charset of the webpage
+    size_t pos = temp.find(std::string("charset"));
+    std::string encoding;
+    if(pos == std::string::npos)
+    {
+        std::wstring message = L"网页html中未定义charset, 将使用UTF-8";
+        MessageBox(NULL, message.c_str(), L"InfoFetch Error", MB_OK | MB_ICONWARNING);
+    }
+    else
+    {
+        for(size_t i = pos + 7; i < temp.length(); i++)
+        {
+            if(temp[i] == ' ')
+                continue;
+            if(temp[i] == '\"')
+            {
+                if(encoding.length())
+                    break;
+                continue;
+            }
+            if(temp[i] == ';')
+                break;
+            if(temp[i] == '=')
+                continue;
+            encoding += temp[i];
+        }
+    }
+    UINT CodePage = CP_UTF8;
+    if(encoding == "utf-8" || encoding == "UTF-8")
+    {
+        return temp;
+    }
+    else if(encoding == "ASCII" || encoding == "ascii")
+    {
+        CodePage = CP_ACP; // Ascii
+    }
+    else if(encoding == "iso-8859-1" || encoding == "ISO-8859-1")
+    {
+        CodePage = 1252; // Latin
+    }
+    else if(encoding.substr(0, 2) == "GB" || encoding.substr(0, 2) == "gb")
+    {
+        CodePage = 936; // GBK
+    }
+    // If nothing matches, use UTF-8 as code page
+    wtemp.clear();
+    wtemp.resize(0);
+    temp.clear();
+    temp.resize(0);
+    // now get the decoded web page
+    size = MultiByteToWideChar(CodePage, 0, byteStream.c_str(), -1, NULL, 0);
+    if(!size)
+    {
+        std::wstring message = L"编码转换错误(MultiByteToWideChar), 错误码: ";
+        std::stringstream sstr;
+        sstr << GetLastError();
+        message += convert2wstring(sstr.str());
+        MessageBox(NULL, message.c_str(), L"InfoFetch Error", MB_OK | MB_ICONWARNING);
+        return "";
+    }
+    else
+    {
+        wtemp.resize(size*sizeof(wchar_t));
+        MultiByteToWideChar(CodePage, 0, byteStream.c_str(), -1, (LPWSTR)wtemp.c_str(), size);
+        size = WideCharToMultiByte(CP_UTF8, 0, wtemp.c_str(), -1, NULL, 0, NULL, NULL);
+        if(!size)
+        {
+            std::wstring message = L"编码转换错误(WideCharToMultiByte), 错误码: ";
+            std::stringstream sstr;
+            sstr << GetLastError();
+            message += convert2wstring(sstr.str());
+            MessageBox(NULL, message.c_str(), L"InfoFetch Error", MB_OK | MB_ICONWARNING);
+            return "";
+        }
+        else
+        {
+            temp.resize(size);
+            WideCharToMultiByte(CP_UTF8, 0, wtemp.c_str(), -1, (LPSTR)temp.c_str(), size, NULL, NULL);
+        }
+    }
+
+    return temp;
 }
