@@ -47,5 +47,5 @@ FILE(GLOB_RECURSE SRC_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 ADD_EXECUTABLE(Run ${SRC_FILES})
 
 TARGET_LINK_LIBRARIES(Run
-    libcurl_imp
+    libcurl
 )
