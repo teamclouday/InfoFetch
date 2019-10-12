@@ -10,6 +10,9 @@ int main()
     Website wb3;
     // wb3.open("http://www.cninfo.com.cn/new/disclosure/stock?orgId=9900031463&stockCode=300630");
     Website wb4;
-    wb4.open("http://www.amazon.com");
+    wb4.open("https://www.amazon.com");
+
+
+
     return 0;
 }

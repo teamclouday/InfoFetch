@@ -28,6 +28,7 @@ bool Website::open(const std::string& url)
     res = curl_easy_perform(this->curl);
     curl_slist_free_all(header);
 
+    // TODO: change this message box to a notification in the future
     if(res != CURLE_OK)
     {
         std::wstring message = L"网络连接错误: ";
