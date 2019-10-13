@@ -18,10 +18,9 @@ namespace InfoFetch
             HtmlDocument htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(web.Content);
             HtmlNodeCollection htmlNodes = htmlDoc.DocumentNode.SelectNodes(direction);
-            Console.WriteLine(web.Content);
             if(htmlNodes == null)
             {
-                Console.WriteLine("URL: " + web.Url + "\nSelector: " + direction + "\nNo Match!");
+                Console.WriteLine("URL: " + web.Url + "\nSelector: " + direction + "\nNo Match!"); // TODO: Change to console independent code in the future
                 return;
             }
             for (int i = 0; i < htmlNodes.Count; i++)

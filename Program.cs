@@ -13,6 +13,16 @@ namespace InfoFetch
 
             // TODO: add program loop in the future
 
+            // init Website content loader
+            Website web = new Website();
+
+            // init html parser
+            Parser findinfo = new Parser();
+
+            // init Database
+            Database data = new Database("../../webdata.sqlite");
+            data.Browse();
+
             // Init File Manager
             FileManager file = new FileManager();
             file.Open("../../websites.txt");
@@ -24,12 +34,6 @@ namespace InfoFetch
             string url, dir;
             file.Fetch(out url, out dir);
 
-            // init Website content loader
-            Website web = new Website();
-
-            // init html parser
-            Parser findinfo = new Parser();
-
             while(url != null)
             {
                 if(!web.Open(url))
@@ -37,7 +41,7 @@ namespace InfoFetch
                     Console.WriteLine("Failed to open " + url); // TODO: Change to console independent code in the future
                     continue;
                 }
-                findinfo.Read(web, dir);
+                // findinfo.Read(web, dir);
 
                 file.Fetch(out url, out dir);
             }
