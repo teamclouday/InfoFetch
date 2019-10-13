@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.IO;
 using System.Text;
 
@@ -49,6 +48,12 @@ namespace InfoFetch
             return true;
         }
 
+        /// <summary>
+        /// First decode web content with UTF-8, to get its charset
+        /// Then decode the web content using the real encoding
+        /// </summary>
+        /// <param name="rawData"></param>
+        /// <returns></returns>
         private bool DecodeWeb(byte[] rawData)
         {
             string rawDataStr = Encoding.UTF8.GetString(rawData); // decode with UTF-8 first
