@@ -14,6 +14,8 @@ namespace InfoFetch
 
         /// <summary>
         /// Open a file path, read URL and Selector Direction
+        /// Rule: First line URL, then next line should be selector(XPath)
+        /// If commented with "#", then the line is skipped
         /// </summary>
         /// <param name="path"></param>
         public void Open(string path)
@@ -25,6 +27,8 @@ namespace InfoFetch
             string line;
             while((line = myReader.ReadLine()) != null)
             {
+                if (line.Length == 0 || line[0] == '#')
+                    continue;
                 if (URL.Count == Direction.Count)
                     URL.Enqueue(line);
                 else

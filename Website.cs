@@ -21,6 +21,10 @@ namespace InfoFetch
             // Reset website content for new url
             Content = string.Empty;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.ContentType = "text/html;charset=UTF-8";
+            request.UserAgent = @"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36";
+            request.UseDefaultCredentials = true;
+            request.Proxy.Credentials = CredentialCache.DefaultCredentials;
             HttpWebResponse responese = (HttpWebResponse)request.GetResponse();
             if(responese.StatusCode == HttpStatusCode.OK)
             {
@@ -39,6 +43,7 @@ namespace InfoFetch
                     rawData = stream.ToArray();
                 }
                 DecodeWeb(rawData); // TODO: push notification if the website may not be successfully decoded
+                Url = url;
             }
             else
             {
@@ -87,6 +92,7 @@ namespace InfoFetch
         }
 
         public string Content { get; set; }
+        public string Url { get; set; }
         private const string DECODESTR = "charset";
     }
 }

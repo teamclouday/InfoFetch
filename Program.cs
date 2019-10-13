@@ -27,6 +27,9 @@ namespace InfoFetch
             // init Website content loader
             Website web = new Website();
 
+            // init html parser
+            Parser findinfo = new Parser();
+
             while(url != null)
             {
                 if(!web.Open(url))
@@ -34,8 +37,7 @@ namespace InfoFetch
                     Console.WriteLine("Failed to open " + url); // TODO: Change to console independent code in the future
                     continue;
                 }
-
-                // TODO: parse here
+                findinfo.Read(web, dir);
 
                 file.Fetch(out url, out dir);
             }

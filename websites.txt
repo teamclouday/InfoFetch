@@ -1,0 +1,4 @@
+http://www.hnpoly.com/
+//*[@id="center"]/ul/li
+# http://www.inspur.com/lcjtww/445068/445237/index.html
+# //*[@id="qhbt"]//*[@class="news-bot"]//aside
