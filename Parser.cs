@@ -24,7 +24,7 @@ namespace InfoFetch
                 return;
             }
             for (int i = 0; i < htmlNodes.Count; i++)
-                Console.WriteLine(htmlNodes[i].InnerHtml);
+                Console.WriteLine(htmlNodes[i].InnerText);
         }
     }
 }

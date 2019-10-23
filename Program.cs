@@ -46,6 +46,8 @@ namespace InfoFetch
                 file.Fetch(out url, out dir);
             }
 
+            data.Update();
+
             if(Debugger.IsAttached)
             {
                 Console.WriteLine("\nPress any key to continue...");
