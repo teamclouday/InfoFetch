@@ -48,7 +48,7 @@ namespace InfoFetch
             // Just for debugging
             con.Open();
             cmd.Reset();
-            cmd.CommandText = "SELECT * FROM WebsiteData";
+            cmd.CommandText = "SELECT * FROM WebsiteData;";
             SQLiteDataReader reader = cmd.ExecuteReader();
             while(reader.Read())
             {
@@ -77,7 +77,7 @@ namespace InfoFetch
             // Check for updates
             con.Open();
             cmd.Reset();
-            cmd.CommandText = "SELECT DISTINCT URL FROM WebsiteData";
+            cmd.CommandText = "SELECT DISTINCT URL FROM WebsiteData;";
             SQLiteDataReader reader = cmd.ExecuteReader();
             while(reader.Read())
             {
@@ -92,32 +92,48 @@ namespace InfoFetch
             foreach (string url in to_remove)
             {
                 cmd.Reset();
-                cmd.CommandText = "DELETE FROM WebsiteData WHERE URL == \'" + url + "\'";
+                cmd.Parameters.Add("@urlname", DbType.String).Value = url;
+                cmd.CommandText = "DELETE FROM WebsiteData WHERE URL=@urlname;";
                 cmd.ExecuteNonQuery();
             }
             con.Close();
         }
 
         /// <summary>
-        /// Compare new extracted data with exisiting data
+        /// Compare new extracted data with exisiting data in database
         /// </summary>
         /// <param name="url"></param>
         /// <param name="content"></param>
         /// <param name="date"></param>
-        public void Compare(string url, string content, int[] date)
+        public void Compare(string url, string content, string date)
         {
-
+            con.Open();
+            cmd.Reset();
+            cmd.Parameters.Add("@urlname", DbType.String).Value = url;
+            cmd.Parameters.Add("@urlcontent", DbType.String).Value = content;
+            cmd.Parameters.Add("@contentdate", DbType.String).Value = date;
+            cmd.CommandText = "SELECT COUNT(*) FROM WebsiteData WHERE URL=@urlname AND DATE=@contentdate AND MESSAGE=@urlcontent;";
+            if (Convert.ToInt32(cmd.ExecuteScalar()) == 0)
+                Add(url, content, date);
+            con.Close();
         }
 
         /// <summary>
-        /// Create info for new sites
+        /// Create info for new content
         /// </summary>
         /// <param name="url"></param>
         /// <param name="content"></param>
         /// <param name="date"></param>
-        private void Add(string url, string content, int[] date)
+        private void Add(string url, string content, string date)
         {
-
+            con.Open();
+            cmd.Reset();
+            cmd.Parameters.Add("@urlname", DbType.String).Value = url;
+            cmd.Parameters.Add("@urlcontent", DbType.String).Value = content; // Here the content is already in UTF-8
+            cmd.Parameters.Add("@contentdate", DbType.String).Value = date;
+            cmd.CommandText = "INSERT INTO WebsiteData (URL, MESSAGE, DATE) VALUES(@urlname, @urlcontent, @contentdate);";
+            cmd.ExecuteNonQuery();
+            con.Close();
         }
 
         private string DATABASE_PATH { get; set; }
