@@ -35,7 +35,7 @@ namespace InfoFetch
                 // TODO: add popup indicating that new database is created
                 con.Open();
                 cmd.Reset();
-                cmd.CommandText = "CREATE TABLE WebsiteData (URL TEXT NOT NULL, MESSAGE TEXT NOT NULL, DATE CHAR(30));";
+                cmd.CommandText = "CREATE TABLE WebsiteData (URL TEXT NOT NULL, MESSAGE TEXT NOT NULL, DATE TEXT NOT NULL);";
                 cmd.ExecuteNonQuery();
                 con.Close();
             }
@@ -43,6 +43,9 @@ namespace InfoFetch
             URLS = new List<string>();
         }
 
+        /// <summary>
+        /// Just for debugging, should not be used in actual program
+        /// </summary>
         public void Browse()
         {
             // Just for debugging
@@ -52,7 +55,7 @@ namespace InfoFetch
             SQLiteDataReader reader = cmd.ExecuteReader();
             while(reader.Read())
             {
-                Console.WriteLine(reader.GetString(0) + " | " + reader.GetString(1) + " | " + reader.GetString(2));
+                Console.WriteLine("\n"+reader.GetString(0) + "\n" + reader.GetString(1) + "\n" + reader.GetString(2)+"\n");
             }
             reader.Close();
             con.Close();
@@ -96,6 +99,9 @@ namespace InfoFetch
                 cmd.CommandText = "DELETE FROM WebsiteData WHERE URL=@urlname;";
                 cmd.ExecuteNonQuery();
             }
+
+            // TODO: Remove redundant content of urls (if > 50 rows)
+
             con.Close();
         }
 
@@ -109,12 +115,12 @@ namespace InfoFetch
         {
             con.Open();
             cmd.Reset();
-            cmd.Parameters.Add("@urlname", DbType.String).Value = url;
-            cmd.Parameters.Add("@urlcontent", DbType.String).Value = content;
-            cmd.Parameters.Add("@contentdate", DbType.String).Value = date;
+            cmd.Parameters.AddWithValue("@urlname", url);
+            cmd.Parameters.AddWithValue("@urlcontent", content);
+            cmd.Parameters.AddWithValue("@contentdate", date);
             cmd.CommandText = "SELECT COUNT(*) FROM WebsiteData WHERE URL=@urlname AND DATE=@contentdate AND MESSAGE=@urlcontent;";
             if (Convert.ToInt32(cmd.ExecuteScalar()) == 0)
-                Add(url, content, date);
+                Add(url, content, date); // TODO: Invoke a new notification
             con.Close();
         }
 
@@ -126,14 +132,12 @@ namespace InfoFetch
         /// <param name="date"></param>
         private void Add(string url, string content, string date)
         {
-            con.Open();
             cmd.Reset();
-            cmd.Parameters.Add("@urlname", DbType.String).Value = url;
-            cmd.Parameters.Add("@urlcontent", DbType.String).Value = content; // Here the content is already in UTF-8
-            cmd.Parameters.Add("@contentdate", DbType.String).Value = date;
-            cmd.CommandText = "INSERT INTO WebsiteData (URL, MESSAGE, DATE) VALUES(@urlname, @urlcontent, @contentdate);";
+            cmd.Parameters.AddWithValue("@urlname", url);
+            cmd.Parameters.AddWithValue("@urlcontent", content);
+            cmd.Parameters.AddWithValue("@contentdate", date);
+            cmd.CommandText = "INSERT INTO WebsiteData (URL, MESSAGE, DATE) VALUES (@urlname, @urlcontent, @contentdate);";
             cmd.ExecuteNonQuery();
-            con.Close();
         }
 
         private string DATABASE_PATH { get; set; }
