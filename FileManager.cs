@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.IO;
 using System.Collections.Generic;
 
@@ -22,17 +23,19 @@ namespace InfoFetch
         {
             URL.Clear();
             Direction.Clear();
-            StreamReader myReader = new StreamReader(path);
+            StreamReader myReader = new StreamReader(path, true);
 
             string line;
             while((line = myReader.ReadLine()) != null)
             {
-                if (line.Length == 0 || line[0] == '#')
+                byte[] line_decoded = myReader.CurrentEncoding.GetBytes(line);
+                string line_encoded = Encoding.UTF8.GetString(line_decoded);
+                if (line_encoded.Length == 0 || line_encoded[0] == '#')
                     continue;
                 if (URL.Count == Direction.Count)
-                    URL.Enqueue(line);
+                    URL.Enqueue(line_encoded);
                 else
-                    Direction.Enqueue(line);
+                    Direction.Enqueue(line_encoded);
             }
 
             myReader.Close();
