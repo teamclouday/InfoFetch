@@ -100,7 +100,22 @@ namespace InfoFetch
                 cmd.ExecuteNonQuery();
             }
 
-            // TODO: Remove redundant content of urls (if > 50 rows)
+            // Remove redundant content of urls (if > 50 rows)
+            cmd.Reset();
+            cmd.CommandText = "SELECT URL, COUNT(*) FROM WebsiteData GROUP BY URL HAVING COUNT(URL) > 50;";
+            reader = cmd.ExecuteReader();
+            while(reader.Read())
+            {
+                string url = reader.GetString(0);
+                int occurences = reader.GetInt32(1);
+                int head = occurences - 30; // Delete to 30 rows
+                cmd.Reset();
+                cmd.Parameters.AddWithValue("@urlname", url);
+                cmd.Parameters.AddWithValue("@limitnum", head);
+                cmd.CommandText = "DELETE FROM WebsiteData WHERE rowid IN (SELECT rowid FROM WebsiteData WHERE URL=@urlname LIMIT @limitnum);";
+                cmd.ExecuteNonQuery();
+            }
+            reader.Close();
 
             con.Close();
         }
@@ -126,6 +141,7 @@ namespace InfoFetch
 
         /// <summary>
         /// Create info for new content
+        /// Must be used under a connected context
         /// </summary>
         /// <param name="url"></param>
         /// <param name="content"></param>

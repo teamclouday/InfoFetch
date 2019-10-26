@@ -25,7 +25,8 @@ namespace InfoFetch
                 Console.WriteLine("URL: " + web.Url + "\nSelector: " + direction + "\nNo Match!"); // TODO: Change to console independent code in the future
                 return;
             }
-            for (int i = 0; i < htmlNodes.Count; i++)
+            // reverse the order, so that the latest date appears at the end of the database
+            for (int i = htmlNodes.Count - 1; i >= 0; i--)
             {
                 ParseContent(htmlNodes[i].InnerText, out string newContent, out string newDate);
                 database.Compare(web.Url, newContent, newDate);

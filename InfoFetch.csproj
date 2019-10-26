@@ -74,10 +74,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="webdata.sqlite" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="websites.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

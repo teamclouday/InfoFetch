@@ -1,7 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Text;
-using System.Diagnostics;
 
 namespace InfoFetch
 {
@@ -13,17 +11,13 @@ namespace InfoFetch
 
             // TODO: add program loop in the future
 
-            // init Website content loader
+            // init all
             Website web = new Website();
-
-            // init html parser
             Parser findinfo = new Parser();
-
-            // init Database
             Database data = new Database("../../webdata.sqlite");
             data.Browse();
 
-            // Init File Manager
+            // init File Manager
             FileManager file = new FileManager();
             file.Open("../../websites.txt");
             if(!file.Validate())
@@ -31,28 +25,21 @@ namespace InfoFetch
                 Console.WriteLine("websites.txt is has wrong content"); // TODO: Change to console independent code in the future
                 Environment.Exit(1);
             }
-            string url, dir;
-            file.Fetch(out url, out dir);
+            file.Fetch(out string url, out string dir);
 
             while(url != null)
             {
+                data.Update(url);
                 if(!web.Open(url))
                 {
                     Console.WriteLine("Failed to open " + url); // TODO: Change to console independent code in the future
                     continue;
                 }
-                // findinfo.Read(web, dir);
-
+                findinfo.Read(web, dir, data);
                 file.Fetch(out url, out dir);
             }
 
             data.Update();
-
-            if(Debugger.IsAttached)
-            {
-                Console.WriteLine("\nPress any key to continue...");
-                Console.ReadKey();
-            }
         }
     }
 }
