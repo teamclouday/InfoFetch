@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.IO;
 using System.Text;
+// using System.Windows.Forms;
 
 namespace InfoFetch
 {
@@ -26,7 +27,7 @@ namespace InfoFetch
             request.UseDefaultCredentials = true;
             request.Proxy.Credentials = CredentialCache.DefaultCredentials;
             HttpWebResponse responese = (HttpWebResponse)request.GetResponse();
-            if(responese.StatusCode == HttpStatusCode.OK)
+            if (responese.StatusCode == HttpStatusCode.OK)
             {
                 byte[] rawData = null;
                 // read response stream to a memorystream
@@ -51,6 +52,29 @@ namespace InfoFetch
             }
             responese.Close();
             return true;
+
+            //WebBrowser wb = new WebBrowser();
+            //wb.ScrollBarsEnabled = false;
+            //wb.ScriptErrorsSuppressed = true;
+            //wb.Navigate(url);
+            //while (wb.ReadyState != WebBrowserReadyState.Complete) { Application.DoEvents(); }
+            //wb.Navigate("javascript: window.external.CallServerSideCode();");
+            //byte[] rawData = null;
+            //using (Stream recieveStream = wb.DocumentStream)
+            //using (MemoryStream stream = new MemoryStream())
+            //{
+            //    int count;
+            //    do
+            //    {
+            //        byte[] buf = new byte[1024];
+            //        count = recieveStream.Read(buf, 0, 1024);
+            //        stream.Write(buf, 0, count);
+            //    } while (recieveStream.CanRead && count > 0);
+            //    rawData = stream.ToArray();
+            //}
+            //Content = Encoding.GetEncoding(wb.Document.Encoding).GetString(rawData);
+            //Url = url;
+            //return true;
         }
 
         /// <summary>
@@ -62,11 +86,11 @@ namespace InfoFetch
         private bool DecodeWeb(byte[] rawData)
         {
             string rawDataStr = Encoding.UTF8.GetString(rawData); // decode with UTF-8 first
-            if(rawDataStr.Contains(DECODESTR))
+            if (rawDataStr.Contains(DECODESTR))
             {
                 int pos = rawDataStr.IndexOf(DECODESTR, 0) + DECODESTR.Length;
                 string encoding = "";
-                for(; pos < rawDataStr.Length; pos++)
+                for (; pos < rawDataStr.Length; pos++)
                 {
                     if (rawDataStr[pos] == ' ')
                         continue;
