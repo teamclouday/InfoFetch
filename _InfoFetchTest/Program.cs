@@ -23,7 +23,7 @@ namespace InfoFetch
             FileManager file = new FileManager();
             if(!File.Exists(".. / .. / websites.txt"))
             {
-                MessageBox.Show(@"未找到文件websites.txt", @"InfoFetch Error", MessageBoxButtons.OK);
+                MessageBox.Show(@"未找到文件websites.txt，程序已退出", @"InfoFetch Error", MessageBoxButtons.OK);
                 Environment.Exit(1);
             }
             file.Open("../../websites.txt");
