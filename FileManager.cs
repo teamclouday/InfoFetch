@@ -23,19 +23,17 @@ namespace InfoFetch
         {
             URL.Clear();
             Direction.Clear();
-            StreamReader myReader = new StreamReader(path, true);
+            StreamReader myReader = new StreamReader(path, Encoding.UTF8);
 
             string line;
             while((line = myReader.ReadLine()) != null)
             {
-                byte[] line_decoded = myReader.CurrentEncoding.GetBytes(line);
-                string line_encoded = Encoding.UTF8.GetString(line_decoded);
-                if (line_encoded.Length == 0 || line_encoded[0] == '#')
+                if (line.Length == 0 || line[0] == '#')
                     continue;
                 if (URL.Count == Direction.Count)
-                    URL.Enqueue(line_encoded);
+                    URL.Enqueue(line);
                 else
-                    Direction.Enqueue(line_encoded);
+                    Direction.Enqueue(line);
             }
 
             myReader.Close();
@@ -52,8 +50,7 @@ namespace InfoFetch
             string[] urls = URL.ToArray();
             for(int i = 0; i < urls.Length; i++)
             {
-                Uri result;
-                if(!Uri.TryCreate(urls[i], UriKind.Absolute, out result) || !(result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps))
+                if(!Uri.TryCreate(urls[i], UriKind.Absolute, out Uri result) || !(result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps))
                 {
                     return false;
                 }

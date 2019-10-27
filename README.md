@@ -23,4 +23,6 @@ Now using C#, building on Visual Studio 2019 Community
 These cs code files will be reused in the new Windows Service App  
 
 The only problem of this program is that it cannot execute js code in HttpRequest  
-So the XPath may be not working for some (actually most) websites
+So the XPath may be not working for some (actually most) websites  
+
+Also, the websites.txt should be saved in encoding UTF-8  
