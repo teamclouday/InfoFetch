@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Windows.Forms;
 
 namespace InfoFetch
 {
@@ -22,7 +23,7 @@ namespace InfoFetch
             file.Open("../../websites.txt");
             if(!file.Validate())
             {
-                Console.WriteLine("websites.txt is has wrong content"); // TODO: Change to console independent code in the future
+                MessageBox.Show(@"websites.txt的格式错误，程序已退出", @"InfoFetch Error", MessageBoxButtons.OK);
                 Environment.Exit(1);
             }
             file.Fetch(out string url, out string dir);
@@ -32,7 +33,7 @@ namespace InfoFetch
                 data.Update(url);
                 if(!web.Open(url))
                 {
-                    Console.WriteLine("Failed to open " + url); // TODO: Change to console independent code in the future
+                    Notification.Push("无法连接网页: " + url);
                     continue;
                 }
                 findinfo.Read(web, dir, data);

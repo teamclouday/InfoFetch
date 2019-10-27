@@ -22,7 +22,7 @@ namespace InfoFetch
             HtmlNodeCollection htmlNodes = htmlDoc.DocumentNode.SelectNodes(direction);
             if(htmlNodes == null)
             {
-                Console.WriteLine("URL: " + web.Url + "\nSelector: " + direction + "\nNo Match!"); // TODO: Change to console independent code in the future
+                Notification.Push("网址："+web.Url+"\n路径(XPath)："+direction+"\n未能找到匹配内容");
                 return;
             }
             // reverse the order, so that the latest date appears at the end of the database
@@ -68,6 +68,8 @@ namespace InfoFetch
             if (dateMatch.Success)
                 newContent = newContent.Replace(dateMatch.Value, "");
             newContent = Regex.Replace(newContent, @"\s+", " ");
+            // For xml special chars
+            newContent = newContent.Replace("<", "").Replace(">", "").Replace("&", "").Replace("\"", "").Replace("\'", "");
             newContent = newContent.TrimStart().TrimEnd();
         }
     }

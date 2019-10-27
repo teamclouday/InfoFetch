@@ -135,7 +135,10 @@ namespace InfoFetch
             cmd.Parameters.AddWithValue("@contentdate", date);
             cmd.CommandText = "SELECT COUNT(*) FROM WebsiteData WHERE URL=@urlname AND DATE=@contentdate AND MESSAGE=@urlcontent;";
             if (Convert.ToInt32(cmd.ExecuteScalar()) == 0)
-                Add(url, content, date); // TODO: Invoke a new notification
+            {
+                Notification.Push(url, content, date);
+                Add(url, content, date);
+            }
             con.Close();
         }
 
