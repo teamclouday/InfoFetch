@@ -54,11 +54,11 @@ namespace InfoFetch
             return true;
 
             //WebBrowser wb = new WebBrowser();
+            //wb.AllowNavigation = true;
             //wb.ScrollBarsEnabled = false;
             //wb.ScriptErrorsSuppressed = true;
             //wb.Navigate(url);
             //while (wb.ReadyState != WebBrowserReadyState.Complete) { Application.DoEvents(); }
-            //wb.Navigate("javascript: window.external.CallServerSideCode();");
             //byte[] rawData = null;
             //using (Stream recieveStream = wb.DocumentStream)
             //using (MemoryStream stream = new MemoryStream())

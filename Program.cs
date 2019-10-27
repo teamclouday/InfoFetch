@@ -6,7 +6,6 @@ namespace InfoFetch
 {
     class Program
     {
-        [STAThread]
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8; // TODO: Remove this when no console debugging is needed
@@ -37,6 +36,8 @@ namespace InfoFetch
                     Notification.Push("网络", "无法连接网页: " + url);
                     continue;
                 }
+
+                Console.WriteLine(web.Content);
                 findinfo.Read(web, dir, data);
                 file.Fetch(out url, out dir);
             }
