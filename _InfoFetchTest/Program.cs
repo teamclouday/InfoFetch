@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 
@@ -20,6 +21,11 @@ namespace InfoFetch
 
             // init File Manager
             FileManager file = new FileManager();
+            if(!File.Exists(".. / .. / websites.txt"))
+            {
+                MessageBox.Show(@"未找到文件websites.txt", @"InfoFetch Error", MessageBoxButtons.OK);
+                Environment.Exit(1);
+            }
             file.Open("../../websites.txt");
             if(!file.Validate())
             {
