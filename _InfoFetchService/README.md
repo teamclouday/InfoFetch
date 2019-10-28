@@ -1,4 +1,6 @@
-# InfoFetch WinForm  
+# InfoFetch  
+
+## Warning: This service program does not work because Windows Service is not designed for user interactions  
 
 **About this project**:  
 This program runs in the background, and fetches desired content from urls (written in websites.txt), according to the XPaths given. If there are any updates, it will push notification to the desktop. It will also load a backup database to check for updates  
@@ -9,6 +11,5 @@ This program runs in the background, and fetches desired content from urls (writ
 3. Single threaded, so cannot handle large databases with lots of query instructions  
 
 **_OUTDATED**: contains old project code written in C++, not complete due to complex Windows API calls  
-**_InfoFetchTest**: contains the source code written in C#, tested to be functional  
-**_InfoFetchService**: contains the source code of the windows service version of this program (not functional)  
+**_InfoFetch**: contains the source code written in C#, tested to be functional  
 **Other codes**: should be a Windows Service Program written in C#  
