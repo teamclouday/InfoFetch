@@ -15,3 +15,5 @@ This program runs in the background, and fetches desired content from urls (writ
 ------
 
 ### The Final Program is in folder `InfoFetchConsole`  
+
+The `InfoFetchConsole/icon.ico` is converted from an Icon made by Vectors Market at www.flaticon.com  
