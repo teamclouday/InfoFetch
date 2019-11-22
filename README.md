@@ -1,4 +1,4 @@
-# InfoFetch UWP  
+# InfoFetch 
 
 **About this project**:  
 This program runs in the background, and fetches desired content from urls (written in websites.txt), according to the XPaths given. If there are any updates, it will push notification to the desktop. It will also load a backup database to check for updates  
@@ -14,4 +14,4 @@ This program runs in the background, and fetches desired content from urls (writ
 
 ------
 
-### The Final Program is in folder `InfoFetchConsole`
+### The Final Program is in folder `InfoFetchConsole`  
