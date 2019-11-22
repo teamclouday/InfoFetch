@@ -1,4 +1,4 @@
-# InfoFetch WinForm  
+# InfoFetch UWP  
 
 **About this project**:  
 This program runs in the background, and fetches desired content from urls (written in websites.txt), according to the XPaths given. If there are any updates, it will push notification to the desktop. It will also load a backup database to check for updates  
@@ -11,4 +11,7 @@ This program runs in the background, and fetches desired content from urls (writ
 **_OUTDATED**: contains old project code written in C++, not complete due to complex Windows API calls  
 **_InfoFetchTest**: contains the source code written in C#, tested to be functional  
 **_InfoFetchService**: contains the source code of the windows service version of this program (not functional)  
-**Other codes**: should be a Windows Service Program written in C#  
+
+------
+
+### The Final Program is in folder `InfoFetchUWP`  
