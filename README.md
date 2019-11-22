@@ -14,4 +14,4 @@ This program runs in the background, and fetches desired content from urls (writ
 
 ------
 
-### The Final Program is in folder `InfoFetchUWP`  
+### The Final Program is in folder `InfoFetchConsole`
