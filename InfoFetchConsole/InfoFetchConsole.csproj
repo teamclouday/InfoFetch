@@ -31,7 +31,7 @@
     <ProductName>InfoFetch</ProductName>
     <PublisherName>Sida Zhu</PublisherName>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <Content Include="SQLite.Interop.dll" />
     <Content Include="websites.txt" />
   </ItemGroup>
   <ItemGroup>
