@@ -9,7 +9,7 @@ namespace InfoFetchConsole
     {
         static void Main(string[] args)
         {
-            MyNotification.Push(@"程序已启动", @"可在系统托盘中管理");
+            MyNotification.Push(@"程序已启动", string.Format("可在系统托盘中管理，运行周期：{0}小时", (UpdateInterval / 3600000)));
 
             webManager = new Website();
             fileManager = new FileManager();
@@ -98,7 +98,11 @@ namespace InfoFetchConsole
             if(!myTimer.AutoReset)
             {
                 myTimer.Stop();
+#if DEBUG
                 myTimer.Interval = 5000;
+#else
+                myTimer.Interval = UpdateInterval;
+#endif
                 myTimer.AutoReset = true;
                 myTimer.Start();
             }
@@ -231,5 +235,6 @@ namespace InfoFetchConsole
         public static bool JobRunning = false;
 
         public const string AppID = @"InfoFetch";
+        private const long UpdateInterval = 28800000;
     }
 }
