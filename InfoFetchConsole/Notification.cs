@@ -23,7 +23,7 @@ namespace InfoFetch
             ToastNotification toast = new ToastNotification(toastXml);
             ToastEvents toastEvents = new ToastEvents();
             toast.Activated += toastEvents.ToastActivated;
-            ToastNotificationManager.CreateToastNotifier(AppID).Show(toast);
+            ToastNotificationManager.CreateToastNotifier(InfoFetchConsole.Program.AppID).Show(toast);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace InfoFetch
             XmlDocument toastXml = new XmlDocument();
             toastXml.LoadXml(toastContent);
             ToastNotification toast = new ToastNotification(toastXml);
-            ToastNotificationManager.CreateToastNotifier(AppID).Show(toast);
+            ToastNotificationManager.CreateToastNotifier(InfoFetchConsole.Program.AppID).Show(toast);
         }
 
         private const string MyToastWebTemplate =
@@ -61,8 +61,6 @@ namespace InfoFetch
             "</binding>" +
             "</visual>" +
             "</toast>";
-
-        const string AppID = "InfoFetch";
     }
 
     public class ToastEvents

@@ -11,12 +11,21 @@ namespace InfoFetchConsole
             webManager = new Website();
             fileManager = new FileManager();
             parser = new Parser();
+#if DEBUG
             databasePath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())), "webdata.sqlite");
+#else
+            databasePath = "webdata.sqlite";
+#endif
             database = new Database(databasePath);
+#if DEBUG
             websitesPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())), "websites.txt");
             iconPath = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())), "icon.ico");
+#else
+            websitesPath = "websites.txt";
+            iconPath = "icon.ico";
+#endif
 
-            System.Threading.Thread notifyThread = new System.Threading.Thread(
+            notifyThread = new System.Threading.Thread(
             delegate()
             {
                 var menuItem1 = new MenuItem();
@@ -59,6 +68,7 @@ namespace InfoFetchConsole
             {
                 System.Threading.Thread.Sleep(50);
             }
+
             notifyThread.Join();
 
             myTimer.Stop();
@@ -92,6 +102,7 @@ namespace InfoFetchConsole
             {
                 MessageBox.Show(@"未找到文件websites.txt，程序已退出", @"InfoFetch Error", MessageBoxButtons.OK);
                 myTimer.Stop();
+                notifyThread.Abort();
                 return;
             }
             fileManager.Open(websitesPath);
@@ -99,6 +110,7 @@ namespace InfoFetchConsole
             {
                 MessageBox.Show(@"websites.txt的格式错误，程序已退出", @"InfoFetch Error", MessageBoxButtons.OK);
                 myTimer.Stop();
+                notifyThread.Abort();
                 return;
             }
 
@@ -168,11 +180,15 @@ namespace InfoFetchConsole
         private static Database database;
         private static System.Timers.Timer myTimer;
         private static NotifyIcon trayIcon;
+        private static System.Threading.Thread notifyThread;
 
         public static string databasePath;
         public static string websitesPath;
         private static string iconPath;
 
         public static bool JobRunning = false;
+
+        public const string AppID = @"InfoFetch";
+        public const string AppName = @"InfoFetch";
     }
 }
