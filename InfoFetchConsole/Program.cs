@@ -9,6 +9,8 @@ namespace InfoFetchConsole
     {
         static void Main(string[] args)
         {
+            MyNotification.Push(@"程序已启动", @"可在系统托盘中管理");
+
             webManager = new Website();
             fileManager = new FileManager();
             parser = new Parser();
