@@ -191,10 +191,19 @@ namespace InfoFetchConsole
         /// <param name="e"></param>
         private static void IconMenuClickEvent4(object sender, System.EventArgs e)
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if(key == null)
+            {
+                Registry.CurrentUser.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            }
             if(key.GetValue(AppID) == null)
             {
-                key.SetValue(AppID, Application.ExecutablePath.ToString());
+#if DEBUG
+                string startPath = Application.ExecutablePath.ToString();
+#else
+                string startPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Programs), "Sida Zhu", "Teamclouday", "InfoFetch.appref-ms");
+#endif
+                key.SetValue(AppID, startPath, RegistryValueKind.String);
                 MyNotification.Push(@"开机启动", @"已开启");
             }
             else

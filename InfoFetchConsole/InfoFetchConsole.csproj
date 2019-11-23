@@ -28,8 +28,10 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <SupportUrl>https://github.com/teamclouday/InfoFetch</SupportUrl>
+    <ErrorReportUrl>https://github.com/teamclouday/InfoFetch</ErrorReportUrl>
     <ProductName>InfoFetch</ProductName>
     <PublisherName>Sida Zhu</PublisherName>
+    <SuiteName>Teamclouday</SuiteName>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
