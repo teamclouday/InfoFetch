@@ -1,4 +1,5 @@
 ﻿using InfoFetch;
+using Microsoft.Win32;
 using System.IO;
 using System.Windows.Forms;
 
@@ -35,16 +36,21 @@ namespace InfoFetchConsole
 
                 var menuItem2 = new MenuItem();
                 menuItem2.Index = 1;
-                menuItem2.Text = "Edit Websites.txt";
+                menuItem2.Text = "Edit websites.txt";
                 menuItem2.Click += new System.EventHandler(IconMenuClickEvent2);
 
+                var menuItem4 = new MenuItem();
+                menuItem4.Index = 2;
+                menuItem4.Text = "Toggle AutoStart";
+                menuItem4.Click += new System.EventHandler(IconMenuClickEvent4);
+
                 var menuItem3 = new MenuItem();
-                menuItem3.Index = 2;
+                menuItem3.Index = 3;
                 menuItem3.Text = "Exit";
                 menuItem3.Click += new System.EventHandler(IconMenuClickEvent3);
 
                 var contextMenu = new ContextMenu();
-                contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2, menuItem3 });
+                contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2, menuItem4, menuItem3 });
 
                 trayIcon = new NotifyIcon();
                 trayIcon.Visible = true;
@@ -150,7 +156,11 @@ namespace InfoFetchConsole
         /// <param name="e"></param>
         private static void IconMenuClickEvent1(object sender, System.EventArgs e)
         {
+#if DEBUG
             System.Diagnostics.Process.Start(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
+#else
+            System.Diagnostics.Process.Start(Directory.GetCurrentDirectory());
+#endif
         }
 
         /// <summary>
@@ -174,6 +184,26 @@ namespace InfoFetchConsole
             Application.Exit();
         }
 
+        /// <summary>
+        /// MenuItem4 Click event: will toggle autostart with system
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void IconMenuClickEvent4(object sender, System.EventArgs e)
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if(key.GetValue(AppID) == null)
+            {
+                key.SetValue(AppID, Application.ExecutablePath.ToString());
+                MyNotification.Push(@"开机启动", @"已开启");
+            }
+            else
+            {
+                key.DeleteValue(AppID, false);
+                MyNotification.Push(@"开机启动", @"已关闭");
+            }
+        }
+
         private static Website webManager;
         private static FileManager fileManager;
         private static Parser parser;
@@ -189,6 +219,5 @@ namespace InfoFetchConsole
         public static bool JobRunning = false;
 
         public const string AppID = @"InfoFetch";
-        public const string AppName = @"InfoFetch";
     }
 }
