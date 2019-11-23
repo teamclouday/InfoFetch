@@ -160,6 +160,14 @@ namespace InfoFetch
             cmd.ExecuteNonQuery();
         }
 
+        /// <summary>
+        /// Reset stored URLS
+        /// </summary>
+        public void Reset()
+        {
+            URLS.Clear();
+        }
+
         private string DATABASE_PATH { get; set; }
         private readonly SQLiteConnection con;
         private readonly SQLiteCommand cmd;

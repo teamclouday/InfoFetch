@@ -137,6 +137,7 @@ namespace InfoFetchConsole
             }
 
             database.Update();
+            database.Reset();
             JobRunning = false;
         }
 

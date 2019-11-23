@@ -129,7 +129,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
-    <Content Include="SQLite.Interop.dll" />
     <Content Include="websites.txt" />
   </ItemGroup>
   <ItemGroup>
