@@ -2,6 +2,9 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
+using Microsoft.Win32;
+using OpenQA.Selenium.Chrome;
 
 namespace InfoFetch
 {
@@ -12,6 +15,22 @@ namespace InfoFetch
             Console.OutputEncoding = Encoding.UTF8; // TODO: Remove this when no console debugging is needed
 
             // TODO: add program loop in the future
+
+            var path = Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe", "", null);
+            if (path != null)
+            {
+                Console.WriteLine(FileVersionInfo.GetVersionInfo(path.ToString()).FileVersion);
+            }
+            else
+            {
+                path = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe", "", null);
+                if(path != null)
+                    Console.WriteLine(FileVersionInfo.GetVersionInfo(path.ToString()).FileVersion);
+            }
+
+            ChromeDriver driver = new ChromeDriver();
+            Console.WriteLine(driver.Capabilities["browserVersion"].ToString());
+            driver.Close();
 
             // init all
             Website web = new Website();

@@ -86,6 +86,7 @@ namespace InfoFetch
             {
                 driver.Navigate().GoToUrl(url);
                 Content = driver.FindElementByTagName("HTML").GetAttribute("innerHTML");
+                driver.Close();
             }
 
             Url = url;
