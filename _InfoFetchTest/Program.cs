@@ -17,11 +17,11 @@ namespace InfoFetch
             Website web = new Website();
             Parser findinfo = new Parser();
             Database data = new Database("../../webdata.sqlite");
-            data.Browse();
+            // data.Browse();
 
             // init File Manager
             FileManager file = new FileManager();
-            if(!File.Exists(".. / .. / websites.txt"))
+            if(!File.Exists("../../websites.txt"))
             {
                 MessageBox.Show(@"未找到文件websites.txt，程序已退出", @"InfoFetch Error", MessageBoxButtons.OK);
                 Environment.Exit(1);
@@ -42,6 +42,7 @@ namespace InfoFetch
                     Notification.Push("网络", "无法连接网页: " + url);
                     continue;
                 }
+                Console.WriteLine(web.Content);
                 findinfo.Read(web, dir, data);
                 file.Fetch(out url, out dir);
             }
