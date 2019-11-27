@@ -2,9 +2,6 @@
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.Diagnostics;
-using Microsoft.Win32;
-using OpenQA.Selenium.Chrome;
 
 namespace InfoFetch
 {
@@ -16,21 +13,24 @@ namespace InfoFetch
 
             // TODO: add program loop in the future
 
-            var path = Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe", "", null);
-            if (path != null)
+            if(!Driver.CheckChromeVersion())
             {
-                Console.WriteLine(FileVersionInfo.GetVersionInfo(path.ToString()).FileVersion);
+                MessageBox.Show(@"未知Chrome版本，程序将退出", @"InfoFetch Error", MessageBoxButtons.OK);
+                Environment.Exit(1);
             }
             else
             {
-                path = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe", "", null);
-                if(path != null)
-                    Console.WriteLine(FileVersionInfo.GetVersionInfo(path.ToString()).FileVersion);
+                if(!Driver.CheckChromeDriver())
+                {
+                    MessageBox.Show(@"chromedriver下载失败，程序将退出", @"InfoFetch Error", MessageBoxButtons.OK);
+                    Environment.Exit(1);
+                }
+                else
+                {
+                    Driver.UpdateLocalHtml();
+                }
             }
 
-            ChromeDriver driver = new ChromeDriver();
-            Console.WriteLine(driver.Capabilities["browserVersion"].ToString());
-            driver.Close();
 
             // init all
             Website web = new Website();
@@ -53,18 +53,23 @@ namespace InfoFetch
             }
             file.Fetch(out string url, out string dir);
 
+            web.StartDriver();
+
             while(url != null)
             {
                 data.Update(url);
                 if(!web.Open(url))
                 {
                     Notification.Push("网络", "无法连接网页: " + url);
+                    file.Fetch(out url, out dir);
                     continue;
                 }
                 Console.WriteLine(web.Content);
                 findinfo.Read(web, dir, data);
                 file.Fetch(out url, out dir);
             }
+
+            web.StopDriver();
 
             data.Update();
         }
