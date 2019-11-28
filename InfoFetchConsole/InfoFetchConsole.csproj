@@ -33,7 +33,7 @@
     <ProductName>InfoFetch</ProductName>
     <PublisherName>Sida Zhu</PublisherName>
     <SuiteName>Teamclouday</SuiteName>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>10</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>

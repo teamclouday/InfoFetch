@@ -88,6 +88,8 @@ namespace InfoFetchConsole
                 Application.Run();
             }
             );
+            notifyThread.CurrentCulture = localeInfo;
+            notifyThread.CurrentUICulture = localeInfo;
             notifyThread.Start();
 
             myTimer = new System.Timers.Timer();
@@ -283,8 +285,9 @@ namespace InfoFetchConsole
                 }
             }
 
-            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(lan);
-            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(lan);
+            localeInfo = CultureInfo.GetCultureInfo(lan);
+            System.Threading.Thread.CurrentThread.CurrentUICulture = localeInfo;
+            System.Threading.Thread.CurrentThread.CurrentCulture = localeInfo;
 
             // System.Console.WriteLine(InputLanguage.DefaultInputLanguage.Culture.Name);
 
@@ -309,5 +312,6 @@ namespace InfoFetchConsole
         private const long UpdateInterval = 28800000;
 
         public static ResourceManager localeM;
+        public static CultureInfo localeInfo;
     }
 }
