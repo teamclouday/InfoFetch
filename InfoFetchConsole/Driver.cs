@@ -166,7 +166,7 @@ namespace InfoFetch
             }
             else
             {
-                MyNotification.Push(InfoFetchConsole.Program.localeM.GetString("Chromedriver"), @"未知chromedriver版本");
+                MyNotification.Push(InfoFetchConsole.Program.localeM.GetString("Chromedriver"), InfoFetchConsole.Program.localeM.GetString("UnknownChromedriverVersion"));
                 return false;
             }
 
