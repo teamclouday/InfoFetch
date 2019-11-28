@@ -1,7 +1,5 @@
 ﻿using System.Net;
-using System.IO;
-using System.Text;
-// using System.Windows.Forms;
+using OpenQA.Selenium.Chrome;
 
 namespace InfoFetch
 {
@@ -10,113 +8,90 @@ namespace InfoFetch
         public Website() { }
         
         /// <summary>
-        /// Fetch decoded html content given url
+        /// Fetch html content given url
         /// </summary>
         /// <param name="url"></param>
         /// <returns>
-        /// true if successfully open and decoded
+        /// true if connection is successful
         /// false if connection fails
         /// </returns>
         public bool Open(string url)
         {
-            // Reset website content for new url
-            Content = string.Empty;
+            if (driver == null) return false;
+
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentType = "text/html;charset=UTF-8";
-            request.UserAgent = @"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36";
-            request.UseDefaultCredentials = true;
-            request.Proxy.Credentials = CredentialCache.DefaultCredentials;
-            HttpWebResponse responese = (HttpWebResponse)request.GetResponse();
-            if (responese.StatusCode == HttpStatusCode.OK)
+            HttpWebResponse responese;
+            try
             {
-                byte[] rawData = null;
-                // read response stream to a memorystream
-                using (Stream recieveStream = responese.GetResponseStream())
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    int count;
-                    do
-                    {
-                        byte[] buf = new byte[1024];
-                        count = recieveStream.Read(buf, 0, 1024);
-                        stream.Write(buf, 0, count);
-                    } while (recieveStream.CanRead && count > 0);
-                    rawData = stream.ToArray();
-                }
-                DecodeWeb(rawData); // TODO: push notification if the website may not be successfully decoded
-                Url = url;
+                responese = (HttpWebResponse)request.GetResponse();
             }
-            else
+            catch (System.Exception)
             {
-                return false; // TODO: push notification if the url cannot be connected
+                return false;
+            }
+
+            if (responese.StatusCode != HttpStatusCode.OK)
+            {
+                responese.Close();
+                return false;
             }
             responese.Close();
-            return true;
 
-            //WebBrowser wb = new WebBrowser();
-            //wb.AllowNavigation = true;
-            //wb.ScrollBarsEnabled = false;
-            //wb.ScriptErrorsSuppressed = true;
-            //wb.Navigate(url);
-            //while (wb.ReadyState != WebBrowserReadyState.Complete) { Application.DoEvents(); }
-            //byte[] rawData = null;
-            //using (Stream recieveStream = wb.DocumentStream)
-            //using (MemoryStream stream = new MemoryStream())
-            //{
-            //    int count;
-            //    do
-            //    {
-            //        byte[] buf = new byte[1024];
-            //        count = recieveStream.Read(buf, 0, 1024);
-            //        stream.Write(buf, 0, count);
-            //    } while (recieveStream.CanRead && count > 0);
-            //    rawData = stream.ToArray();
-            //}
-            //Content = Encoding.GetEncoding(wb.Document.Encoding).GetString(rawData);
-            //Url = url;
-            //return true;
+            driver.Navigate().GoToUrl(url);
+
+            int counter = 0;
+            while ((string)driver.ExecuteScript("return document.readyState") != "complete")
+            {
+                System.Threading.Thread.Sleep(1000);
+                counter++;
+                if (counter > 20)
+                {
+                    driver.Close();
+                    return false;
+                }
+            }
+            System.Threading.Thread.Sleep(1000);
+
+            Content = driver.FindElementByTagName("HTML").GetAttribute("innerHTML");
+            Url = url;
+
+            return true;
         }
 
         /// <summary>
-        /// First decode web content with UTF-8, to get its charset
-        /// Then decode the web content using the real encoding
+        /// Start chromedriver
         /// </summary>
-        /// <param name="rawData"></param>
-        /// <returns></returns>
-        private bool DecodeWeb(byte[] rawData)
+        public void StartDriver()
         {
-            string rawDataStr = Encoding.UTF8.GetString(rawData); // decode with UTF-8 first
-            if (rawDataStr.Contains(DECODESTR))
+            if (driver != null)
             {
-                int pos = rawDataStr.IndexOf(DECODESTR, 0) + DECODESTR.Length;
-                string encoding = "";
-                for (; pos < rawDataStr.Length; pos++)
-                {
-                    if (rawDataStr[pos] == ' ')
-                        continue;
-                    else if (rawDataStr[pos] == '=')
-                        continue;
-                    else if (rawDataStr[pos] == '"')
-                    {
-                        if (encoding == "")
-                            continue;
-                        else
-                            break;
-                    }
-                    encoding += rawDataStr[pos];
-                }
-                Content = Encoding.GetEncoding(encoding).GetString(rawData); // decode with real charset
+                driver.Quit();
+                driver.Dispose();
             }
-            else
+            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+            service.HideCommandPromptWindow = true;
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("headless");
+            driver = new ChromeDriver(service, options);
+        }
+
+        /// <summary>
+        /// Stop chromedriver
+        /// </summary>
+        public void StopDriver()
+        {
+            if (driver != null)
             {
-                Content = rawDataStr; // if charset not defined, use UTF-8 as default
-                return false;
+                driver.Quit();
+                driver.Dispose();
             }
-            return true;
+            driver = null;
         }
 
         public string Content { get; set; }
         public string Url { get; set; }
-        private const string DECODESTR = "charset";
+
+        private ChromeDriver driver = null;
     }
 }

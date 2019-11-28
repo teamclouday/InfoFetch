@@ -9,6 +9,26 @@ namespace InfoFetchConsole
     {
         static void Main(string[] args)
         {
+            MyNotification.Push(@"正在初始化", @"稍等片刻");
+
+            if (!Driver.CheckChromeVersion())
+            {
+                MessageBox.Show(@"未知Chrome版本，程序将退出", @"InfoFetch Error", MessageBoxButtons.OK);
+                System.Environment.Exit(1);
+            }
+            else
+            {
+                if (!Driver.CheckChromeDriver())
+                {
+                    MessageBox.Show(@"chromedriver下载失败，程序将退出", @"InfoFetch Error", MessageBoxButtons.OK);
+                    System.Environment.Exit(1);
+                }
+                else
+                {
+                    Driver.UpdateLocalHtml();
+                }
+            }
+
             MyNotification.Push(@"程序已启动", string.Format("可在系统托盘中管理，运行周期：{0}小时", (UpdateInterval / 3600000)));
 
             webManager = new Website();
@@ -128,20 +148,27 @@ namespace InfoFetchConsole
 
             fileManager.Fetch(out string url, out string dir);
 
+            webManager.StartDriver();
+
             while (url != null)
             {
                 database.Update(url);
                 if (!webManager.Open(url))
                 {
                     MyNotification.Push("网络", "无法连接网页: " + url);
-                    continue;
                 }
-                parser.Read(webManager, dir, database);
+                else
+                {
+                    parser.Read(webManager, dir, database);
+                }
                 fileManager.Fetch(out url, out dir);
             }
 
+            webManager.StopDriver();
+
             database.Update();
             database.Reset();
+
             JobRunning = false;
         }
 
@@ -188,6 +215,15 @@ namespace InfoFetchConsole
         private static void IconMenuClickEvent3(object sender, System.EventArgs e)
         {
             myTimer.Stop();
+            if(JobRunning)
+            {
+                MyNotification.Push(@"等待后台任务结束", @"结束后将会退出");
+            }
+            while(JobRunning)
+            {
+                System.Threading.Thread.Sleep(50);
+            }
+            webManager.StopDriver();
             Application.Exit();
         }
 
