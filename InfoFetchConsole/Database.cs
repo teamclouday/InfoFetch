@@ -94,7 +94,7 @@ namespace InfoFetch
             // Updates
             foreach (string url in to_remove)
             {
-                MyNotification.Push("数据库变动", "旧网页内容已从数据库删除\nURL: "+url);
+                MyNotification.Push(InfoFetchConsole.Program.localeM.GetString("DatabaseChange"), InfoFetchConsole.Program.localeM.GetString("DatabaseOldDelete") + "\nURL: " + url);
                 cmd.Reset();
                 cmd.Parameters.Add("@urlname", DbType.String).Value = url;
                 cmd.CommandText = "DELETE FROM WebsiteData WHERE URL=@urlname;";

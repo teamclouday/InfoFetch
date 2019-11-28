@@ -49,12 +49,12 @@ namespace InfoFetch
             bool driverOK = true;
             if(!File.Exists("chromedriver.exe"))
             {
-                MyNotification.Push(@"Chrome驱动", "未找到chromedriver");
+                MyNotification.Push(InfoFetchConsole.Program.localeM.GetString("Chromedriver"), InfoFetchConsole.Program.localeM.GetString("ChromedriverNotFound"));
                 driverOK = false;
             }
             else if(!CheckChromeDriverVersion())
             {
-                MyNotification.Push(@"Chrome驱动", "chromedriver版本不正确");
+                MyNotification.Push(InfoFetchConsole.Program.localeM.GetString("Chromedriver"), InfoFetchConsole.Program.localeM.GetString("ChromedriverWrongVersion"));
                 driverOK = false;
             }
             if(!driverOK)
@@ -74,7 +74,7 @@ namespace InfoFetch
         /// </returns>
         private static bool DownloadChromeDriver()
         {
-            MyNotification.Push(@"Chrome驱动", @"正在下载chromedriver");
+            MyNotification.Push(InfoFetchConsole.Program.localeM.GetString("Chromedriver"), InfoFetchConsole.Program.localeM.GetString("ChromedriverDownload"));
 
             string webContent;
             if(File.Exists(localBackupFile))
@@ -166,7 +166,7 @@ namespace InfoFetch
             }
             else
             {
-                MyNotification.Push(@"Chrome驱动", @"未知chromedriver版本");
+                MyNotification.Push(InfoFetchConsole.Program.localeM.GetString("Chromedriver"), @"未知chromedriver版本");
                 return false;
             }
 

@@ -22,7 +22,9 @@ namespace InfoFetch
             HtmlNodeCollection htmlNodes = htmlDoc.DocumentNode.SelectNodes(direction);
             if(htmlNodes == null)
             {
-                MyNotification.Push("未能找到匹配内容", "网址："+web.Url+"\n路径(XPath)："+direction);
+                MyNotification.Push(InfoFetchConsole.Program.localeM.GetString("ParseFail"),
+                    string.Format(InfoFetchConsole.Program.localeM.GetString("URLXpath") + "\n" +
+                                  InfoFetchConsole.Program.localeM.GetString("XPath"), web.Url, direction));
                 return;
             }
             // reverse the order, so that the latest date appears at the end of the database

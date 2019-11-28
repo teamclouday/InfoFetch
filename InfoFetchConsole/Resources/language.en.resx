@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Activated" xml:space="preserve">
+    <value>Activated</value>
+  </data>
+  <data name="AutoStart" xml:space="preserve">
+    <value>Program AutoStart</value>
+  </data>
+  <data name="CannotConnect" xml:space="preserve">
+    <value>Cannot connect web page: </value>
+  </data>
+  <data name="Chromedriver" xml:space="preserve">
+    <value>chromedriver</value>
+  </data>
+  <data name="ChromedriverDownload" xml:space="preserve">
+    <value>Downloading chromedriver</value>
+  </data>
+  <data name="ChromedriverDownloadFail" xml:space="preserve">
+    <value>Failed to download chromedriver. Program will terminate</value>
+  </data>
+  <data name="ChromedriverNotFound" xml:space="preserve">
+    <value>Cannot find chromedriver</value>
+  </data>
+  <data name="ChromedriverWrongVersion" xml:space="preserve">
+    <value>chromedriver has wrong version</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content: {0}</value>
+  </data>
+  <data name="DatabaseChange" xml:space="preserve">
+    <value>Database has changed</value>
+  </data>
+  <data name="DatabaseOldDelete" xml:space="preserve">
+    <value>Old resources have been deleted</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date: {1}</value>
+  </data>
+  <data name="Deactivated" xml:space="preserve">
+    <value>Deactivated</value>
+  </data>
+  <data name="EditWebsites" xml:space="preserve">
+    <value>Edit websites.txt</value>
+  </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="IconText" xml:space="preserve">
+    <value>InfoFetch Program</value>
+  </data>
+  <data name="InfoFetchContentUpdate" xml:space="preserve">
+    <value>InfoFetch Content Update</value>
+  </data>
+  <data name="InfoFetchError" xml:space="preserve">
+    <value>InfoFetch Error</value>
+  </data>
+  <data name="InfoFetchMessage" xml:space="preserve">
+    <value>Infofetch Message: {0}</value>
+  </data>
+  <data name="Network" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="OpenLocation" xml:space="preserve">
+    <value>Open Program Location</value>
+  </data>
+  <data name="ParseFail" xml:space="preserve">
+    <value>Failed to match desired content</value>
+  </data>
+  <data name="ProgramStart" xml:space="preserve">
+    <value>Program is launching</value>
+  </data>
+  <data name="ProgramStarted" xml:space="preserve">
+    <value>Program has started</value>
+  </data>
+  <data name="SystemTrayManage" xml:space="preserve">
+    <value>It can be managed in system tray. Running interval: {0} hours</value>
+  </data>
+  <data name="ToggleAutostart" xml:space="preserve">
+    <value>Toggle AutoStart</value>
+  </data>
+  <data name="TxtNotFound" xml:space="preserve">
+    <value>Cannot find websites.txt. Program will terminate</value>
+  </data>
+  <data name="TxtWrongFormat" xml:space="preserve">
+    <value>websites.txt has wrong format. Program will terminate</value>
+  </data>
+  <data name="UnknownChromedriverVersion" xml:space="preserve">
+    <value>chromedriver version is unknown</value>
+  </data>
+  <data name="UnknownChromeVersion" xml:space="preserve">
+    <value>Chrome version is unknown. Program will terminate</value>
+  </data>
+  <data name="URL" xml:space="preserve">
+    <value>URL: {2}</value>
+  </data>
+  <data name="URLXpath" xml:space="preserve">
+    <value>URL: {0}</value>
+  </data>
+  <data name="Wait" xml:space="preserve">
+    <value>Please wait</value>
+  </data>
+  <data name="WaitBackground" xml:space="preserve">
+    <value>Waiting for background processes</value>
+  </data>
+  <data name="WaitExit" xml:space="preserve">
+    <value>Program will terminate after processes have all finished</value>
+  </data>
+  <data name="XPatch" xml:space="preserve">
+    <value>XPath: {1}</value>
+  </data>
+</root>

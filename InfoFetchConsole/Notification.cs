@@ -41,22 +41,23 @@ namespace InfoFetch
             ToastNotificationManager.CreateToastNotifier(InfoFetchConsole.Program.AppID).Show(toast);
         }
 
-        private const string MyToastWebTemplate =
+        private static string MyToastWebTemplate =
             "<toast launch=\"{3}\">" +
             "<visual>" +
             "<binding template=\"ToastText04\">" +
-            "<text id = \"1\">InfoFetch内容更新</text>+" +
-            "<text id = \"2\">内容： {0}</text>+" +
-            "<text id = \"3\">日期： {1}\n网址： {2}</text>+" +
+            "<text id = \"1\">" + InfoFetchConsole.Program.localeM.GetString("InfoFetchContentUpdate") + "</text>+" +
+            "<text id = \"2\">" + InfoFetchConsole.Program.localeM.GetString("Content") + "</text>+" +
+            "<text id = \"3\">" + InfoFetchConsole.Program.localeM.GetString("Date") + "\n" +
+            InfoFetchConsole.Program.localeM.GetString("URL") + "</text>+" +
             "</binding>" +
             "</visual>" +
             "</toast>";
 
-        private const string MyToastSimpleTemplate =
+        private static string MyToastSimpleTemplate =
             "<toast>" +
             "<visual>" +
             "<binding template=\"ToastText02\">" +
-            "<text id = \"1\">InfoFetch提示：{0}</text>+" +
+            "<text id = \"1\">" + InfoFetchConsole.Program.localeM.GetString("InfoFetchMessage") + "</text>+" +
             "<text id = \"2\">{1}</text>+" +
             "</binding>" +
             "</visual>" +

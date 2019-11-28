@@ -29,10 +29,11 @@
     <MapFileExtensions>true</MapFileExtensions>
     <SupportUrl>https://github.com/teamclouday/InfoFetch</SupportUrl>
     <ErrorReportUrl>https://github.com/teamclouday/InfoFetch</ErrorReportUrl>
+    <TargetCulture>en-US</TargetCulture>
     <ProductName>InfoFetch</ProductName>
     <PublisherName>Sida Zhu</PublisherName>
     <SuiteName>Teamclouday</SuiteName>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>9</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -58,7 +59,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>InfoFetchConsole.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
@@ -75,6 +76,10 @@
   <PropertyGroup>
     <SignManifests>true</SignManifests>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
@@ -125,6 +130,16 @@
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\language.en.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>language.en.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\language.zh.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>language.zh.resx</DependentUpon>
+    </Compile>
     <Compile Include="Website.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +164,30 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\language.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LogicalName>language.en.resources</LogicalName>
+      <LastGenOutput>language.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\language.zh.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LogicalName>language.zh.resources</LogicalName>
+      <LastGenOutput>language.zh.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="zh\InfoFetch.resources">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Satellite</FileType>
+    </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

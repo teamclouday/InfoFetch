@@ -1,6 +1,8 @@
 ﻿using InfoFetch;
 using Microsoft.Win32;
 using System.IO;
+using System.Resources;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace InfoFetchConsole
@@ -9,18 +11,20 @@ namespace InfoFetchConsole
     {
         static void Main(string[] args)
         {
-            MyNotification.Push(@"正在初始化", @"稍等片刻");
+            CheckLocalization();
+
+            MyNotification.Push(localeM.GetString("ProgramStart"), localeM.GetString("Wait"));
 
             if (!Driver.CheckChromeVersion())
             {
-                MessageBox.Show(@"未知Chrome版本，程序将退出", @"InfoFetch Error", MessageBoxButtons.OK);
+                MessageBox.Show(localeM.GetString("UnknownChromeVersion"), localeM.GetString("InfoFetchError"), MessageBoxButtons.OK);
                 System.Environment.Exit(1);
             }
             else
             {
                 if (!Driver.CheckChromeDriver())
                 {
-                    MessageBox.Show(@"chromedriver下载失败，程序将退出", @"InfoFetch Error", MessageBoxButtons.OK);
+                    MessageBox.Show(localeM.GetString("ChromedriverDownloadFail"), localeM.GetString("InfoFetchError"), MessageBoxButtons.OK);
                     System.Environment.Exit(1);
                 }
                 else
@@ -29,7 +33,7 @@ namespace InfoFetchConsole
                 }
             }
 
-            MyNotification.Push(@"程序已启动", string.Format("可在系统托盘中管理，运行周期：{0}小时", (UpdateInterval / 3600000)));
+            MyNotification.Push(localeM.GetString("ProgramStarted"), string.Format(localeM.GetString("SystemTrayManage"), (UpdateInterval / 3600000)));
 
             webManager = new Website();
             fileManager = new FileManager();
@@ -53,22 +57,22 @@ namespace InfoFetchConsole
             {
                 var menuItem1 = new MenuItem();
                 menuItem1.Index = 0;
-                menuItem1.Text = "Open Program Location";
+                menuItem1.Text = localeM.GetString("OpenLocation");
                 menuItem1.Click += new System.EventHandler(IconMenuClickEvent1);
 
                 var menuItem2 = new MenuItem();
                 menuItem2.Index = 1;
-                menuItem2.Text = "Edit websites.txt";
+                menuItem2.Text = localeM.GetString("EditWebsites");
                 menuItem2.Click += new System.EventHandler(IconMenuClickEvent2);
 
                 var menuItem4 = new MenuItem();
                 menuItem4.Index = 2;
-                menuItem4.Text = "Toggle AutoStart";
+                menuItem4.Text = localeM.GetString("ToggleAutostart");
                 menuItem4.Click += new System.EventHandler(IconMenuClickEvent4);
 
                 var menuItem3 = new MenuItem();
                 menuItem3.Index = 3;
-                menuItem3.Text = "Exit";
+                menuItem3.Text = localeM.GetString("Exit");
                 menuItem3.Click += new System.EventHandler(IconMenuClickEvent3);
 
                 var contextMenu = new ContextMenu();
@@ -78,7 +82,7 @@ namespace InfoFetchConsole
                 trayIcon.Visible = true;
                 trayIcon.Icon = new System.Drawing.Icon(iconPath);
                 trayIcon.DoubleClick += new System.EventHandler(IconDoubleClickEvent);
-                trayIcon.Text = "InfoFetch Program";
+                trayIcon.Text = localeM.GetString("IconText");
                 trayIcon.ContextMenu = contextMenu;
 
                 Application.Run();
@@ -132,7 +136,7 @@ namespace InfoFetchConsole
             // Check website data
             if (!File.Exists(websitesPath))
             {
-                MessageBox.Show(@"未找到文件websites.txt，程序已退出", @"InfoFetch Error", MessageBoxButtons.OK);
+                MessageBox.Show(localeM.GetString("TxtNotFound"), localeM.GetString("InfoFetchError"), MessageBoxButtons.OK);
                 myTimer.Stop();
                 notifyThread.Abort();
                 return;
@@ -140,7 +144,7 @@ namespace InfoFetchConsole
             fileManager.Open(websitesPath);
             if (!fileManager.Validate())
             {
-                MessageBox.Show(@"websites.txt的格式错误，程序已退出", @"InfoFetch Error", MessageBoxButtons.OK);
+                MessageBox.Show(localeM.GetString("TxtWrongFormat"), localeM.GetString("InfoFetchError"), MessageBoxButtons.OK);
                 myTimer.Stop();
                 notifyThread.Abort();
                 return;
@@ -155,7 +159,7 @@ namespace InfoFetchConsole
                 database.Update(url);
                 if (!webManager.Open(url))
                 {
-                    MyNotification.Push("网络", "无法连接网页: " + url);
+                    MyNotification.Push(localeM.GetString("Network"), localeM.GetString("CannotConnect") + url);
                 }
                 else
                 {
@@ -217,7 +221,7 @@ namespace InfoFetchConsole
             myTimer.Stop();
             if(JobRunning)
             {
-                MyNotification.Push(@"等待后台任务结束", @"结束后将会退出");
+                MyNotification.Push(localeM.GetString("WaitBackground"), localeM.GetString("WaitExit"));
             }
             while(JobRunning)
             {
@@ -247,13 +251,44 @@ namespace InfoFetchConsole
                 string startPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Programs), "Sida Zhu", "Teamclouday", "InfoFetch.appref-ms");
 #endif
                 key.SetValue(AppID, startPath, RegistryValueKind.String);
-                MyNotification.Push(@"开机启动", @"已开启");
+                MyNotification.Push(localeM.GetString("AutoStart"), localeM.GetString("Activated"));
             }
             else
             {
                 key.DeleteValue(AppID, false);
-                MyNotification.Push(@"开机启动", @"已关闭");
+                MyNotification.Push(localeM.GetString("AutoStart"), localeM.GetString("Deactivated"));
             }
+        }
+
+        /// <summary>
+        /// Set Resource Manager based on locale on Computer
+        /// </summary>
+        /// <returns></returns>
+        private static void CheckLocalization()
+        {
+            //CultureInfo[] current = CultureInfo.GetCultures(CultureTypes.InstalledWin32Cultures);
+            //foreach(CultureInfo ci in current)
+            //{
+            //    System.Console.WriteLine(ci.EnglishName);
+            //}
+
+            string lan = "en-US";
+
+            foreach (InputLanguage c in InputLanguage.InstalledInputLanguages)
+            {
+                if(c.Culture.Name.Substring(0, 2) == "zh")
+                {
+                    lan = "zh-CN";
+                    break;
+                }
+            }
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(lan);
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(lan);
+
+            // System.Console.WriteLine(InputLanguage.DefaultInputLanguage.Culture.Name);
+
+            localeM = new ResourceManager("language", System.Reflection.Assembly.GetExecutingAssembly());
         }
 
         private static Website webManager;
@@ -272,5 +307,7 @@ namespace InfoFetchConsole
 
         public const string AppID = @"InfoFetch";
         private const long UpdateInterval = 28800000;
+
+        public static ResourceManager localeM;
     }
 }
