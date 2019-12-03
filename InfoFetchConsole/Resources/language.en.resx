@@ -123,8 +123,14 @@
   <data name="AutoStart" xml:space="preserve">
     <value>Program AutoStart</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CannotConnect" xml:space="preserve">
     <value>Cannot connect web page: </value>
+  </data>
+  <data name="ChangeInterval" xml:space="preserve">
+    <value>Change Interval</value>
   </data>
   <data name="Chromedriver" xml:space="preserve">
     <value>chromedriver</value>
@@ -153,6 +159,9 @@
   <data name="Date" xml:space="preserve">
     <value>Date: {1}</value>
   </data>
+  <data name="Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
   <data name="Deactivated" xml:space="preserve">
     <value>Deactivated</value>
   </data>
@@ -161,6 +170,9 @@
   </data>
   <data name="Exit" xml:space="preserve">
     <value>Exit</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Hour</value>
   </data>
   <data name="IconText" xml:space="preserve">
     <value>InfoFetch Program</value>
@@ -174,8 +186,23 @@
   <data name="InfoFetchMessage" xml:space="preserve">
     <value>Infofetch Message: {0}</value>
   </data>
+  <data name="IntervalNew" xml:space="preserve">
+    <value>New interval:</value>
+  </data>
+  <data name="IntervalUpdate" xml:space="preserve">
+    <value>Running interval has updated</value>
+  </data>
+  <data name="IntervalWillShow" xml:space="preserve">
+    <value>Interval editor will show up after processes have all finished</value>
+  </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
   <data name="Network" xml:space="preserve">
     <value>Network</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="OpenLocation" xml:space="preserve">
     <value>Open Program Location</value>
@@ -188,6 +215,9 @@
   </data>
   <data name="ProgramStarted" xml:space="preserve">
     <value>Program has started</value>
+  </data>
+  <data name="Second" xml:space="preserve">
+    <value>Second</value>
   </data>
   <data name="SystemTrayManage" xml:space="preserve">
     <value>It can be managed in system tray. Running interval: {0} hours</value>

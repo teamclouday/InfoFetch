@@ -65,18 +65,23 @@ namespace InfoFetchConsole
                 menuItem2.Text = localeM.GetString("EditWebsites");
                 menuItem2.Click += new System.EventHandler(IconMenuClickEvent2);
 
+                var menuItem5 = new MenuItem();
+                menuItem5.Index = 2;
+                menuItem5.Text = localeM.GetString("ChangeInterval");
+                menuItem5.Click += new System.EventHandler(IconMenuClickEvent5);
+
                 var menuItem4 = new MenuItem();
-                menuItem4.Index = 2;
+                menuItem4.Index = 3;
                 menuItem4.Text = localeM.GetString("ToggleAutostart");
                 menuItem4.Click += new System.EventHandler(IconMenuClickEvent4);
 
                 var menuItem3 = new MenuItem();
-                menuItem3.Index = 3;
+                menuItem3.Index = 4;
                 menuItem3.Text = localeM.GetString("Exit");
                 menuItem3.Click += new System.EventHandler(IconMenuClickEvent3);
 
                 var contextMenu = new ContextMenu();
-                contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2, menuItem4, menuItem3 });
+                contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem1, menuItem2, menuItem5, menuItem4, menuItem3 });
 
                 trayIcon = new NotifyIcon();
                 trayIcon.Visible = true;
@@ -88,8 +93,6 @@ namespace InfoFetchConsole
                 Application.Run();
             }
             );
-            notifyThread.CurrentCulture = localeInfo;
-            notifyThread.CurrentUICulture = localeInfo;
             notifyThread.Start();
 
             myTimer = new System.Timers.Timer();
@@ -100,7 +103,7 @@ namespace InfoFetchConsole
 
             while (myTimer.Enabled)
             {
-                System.Threading.Thread.Sleep(50);
+                System.Threading.Thread.Sleep(20);
             }
 
             notifyThread.Join();
@@ -234,7 +237,7 @@ namespace InfoFetchConsole
         }
 
         /// <summary>
-        /// MenuItem4 Click event: will toggle autostart with system
+        /// MenuItem4 click event: will toggle autostart with system
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -263,6 +266,36 @@ namespace InfoFetchConsole
         }
 
         /// <summary>
+        /// MenuItem5 click event: will show a input box to update a new interval
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void IconMenuClickEvent5(object sender, System.EventArgs e)
+        {
+            myTimer.AutoReset = false;
+            myTimer.Stop();
+            if(JobRunning)
+            {
+                MyNotification.Push(localeM.GetString("WaitBackground"), localeM.GetString("IntervalWillShow"));
+            }
+            while(JobRunning)
+            {
+                System.Threading.Thread.Sleep(50);
+            }
+            if(MyUI.IntervalInput(UpdateInterval, out long newInterval) == DialogResult.OK)
+            {
+                UpdateInterval = newInterval;
+            }
+#if DEBUG
+            myTimer.Interval = 5000;
+#else
+            myTimer.Interval = UpdateInterval;
+#endif
+            myTimer.AutoReset = true;
+            myTimer.Start();
+        }
+
+        /// <summary>
         /// Set Resource Manager based on locale on Computer
         /// </summary>
         /// <returns></returns>
@@ -275,7 +308,7 @@ namespace InfoFetchConsole
             //}
 
             string lan = "en-US";
-
+#if !DEBUG
             foreach (InputLanguage c in InputLanguage.InstalledInputLanguages)
             {
                 if(c.Culture.Name.Substring(0, 2) == "zh")
@@ -284,12 +317,10 @@ namespace InfoFetchConsole
                     break;
                 }
             }
-
+#endif
             localeInfo = CultureInfo.GetCultureInfo(lan);
-            System.Threading.Thread.CurrentThread.CurrentUICulture = localeInfo;
-            System.Threading.Thread.CurrentThread.CurrentCulture = localeInfo;
-
-            // System.Console.WriteLine(InputLanguage.DefaultInputLanguage.Culture.Name);
+            CultureInfo.DefaultThreadCurrentCulture = localeInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = localeInfo;
 
             localeM = new ResourceManager("language", System.Reflection.Assembly.GetExecutingAssembly());
         }
@@ -309,7 +340,7 @@ namespace InfoFetchConsole
         public static bool JobRunning = false;
 
         public const string AppID = @"InfoFetch";
-        private const long UpdateInterval = 28800000;
+        private static long UpdateInterval = 28800000;
 
         public static ResourceManager localeM;
         public static CultureInfo localeInfo;

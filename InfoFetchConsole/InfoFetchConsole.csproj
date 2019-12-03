@@ -33,8 +33,8 @@
     <ProductName>InfoFetch</ProductName>
     <PublisherName>Sida Zhu</PublisherName>
     <SuiteName>Teamclouday</SuiteName>
-    <ApplicationRevision>12</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -140,6 +140,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>language.zh.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI.cs" />
     <Compile Include="Website.cs" />
   </ItemGroup>
   <ItemGroup>
