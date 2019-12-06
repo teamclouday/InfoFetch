@@ -252,7 +252,7 @@
   <data name="WaitExit" xml:space="preserve">
     <value>Program will terminate after processes have all finished</value>
   </data>
-  <data name="XPatch" xml:space="preserve">
+  <data name="XPath" xml:space="preserve">
     <value>XPath: {1}</value>
   </data>
 </root>

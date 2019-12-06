@@ -97,7 +97,6 @@ namespace InfoFetchConsole
 
             myTimer = new System.Timers.Timer();
             myTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimeEvent);
-            myTimer.Enabled = true;
             myTimer.AutoReset = false;
             myTimer.Start();
 
@@ -118,6 +117,7 @@ namespace InfoFetchConsole
         /// <param name="e"></param>
         private static void OnTimeEvent(object sender, System.Timers.ElapsedEventArgs e)
         {
+            System.Console.WriteLine("A Job Begins");
             if(JobRunning)
             {
                 // to avoid conflict, return this run
@@ -126,14 +126,8 @@ namespace InfoFetchConsole
 
             if(!myTimer.AutoReset)
             {
-                myTimer.Stop();
-#if DEBUG
-                myTimer.Interval = 5000;
-#else
                 myTimer.Interval = UpdateInterval;
-#endif
                 myTimer.AutoReset = true;
-                myTimer.Start();
             }
 
             JobRunning = true;
@@ -272,12 +266,11 @@ namespace InfoFetchConsole
         /// <param name="e"></param>
         private static void IconMenuClickEvent5(object sender, System.EventArgs e)
         {
-            myTimer.AutoReset = false;
-            myTimer.Stop();
             if(JobRunning)
             {
                 MyNotification.Push(localeM.GetString("WaitBackground"), localeM.GetString("IntervalWillShow"));
             }
+            myTimer.AutoReset = false;
             while(JobRunning)
             {
                 System.Threading.Thread.Sleep(50);
@@ -286,12 +279,7 @@ namespace InfoFetchConsole
             {
                 UpdateInterval = newInterval;
             }
-#if DEBUG
-            myTimer.Interval = 5000;
-#else
             myTimer.Interval = UpdateInterval;
-#endif
-            myTimer.AutoReset = true;
             myTimer.Start();
         }
 
@@ -308,7 +296,7 @@ namespace InfoFetchConsole
             //}
 
             string lan = "en-US";
-#if !DEBUG
+
             foreach (InputLanguage c in InputLanguage.InstalledInputLanguages)
             {
                 if(c.Culture.Name.Substring(0, 2) == "zh")
@@ -317,7 +305,7 @@ namespace InfoFetchConsole
                     break;
                 }
             }
-#endif
+
             localeInfo = CultureInfo.GetCultureInfo(lan);
             CultureInfo.DefaultThreadCurrentCulture = localeInfo;
             CultureInfo.DefaultThreadCurrentUICulture = localeInfo;

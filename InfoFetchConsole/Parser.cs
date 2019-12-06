@@ -45,7 +45,7 @@ namespace InfoFetch
         private void ParseContent(string content, out string newContent, out string newDate)
         {
             // First find the date
-            Regex dateReg = new Regex(@".*20\d\d.{1,2}\d{1,2}.{1,2}\d{1,2}.*"); 
+            Regex dateReg = new Regex(@".*(20\d\d.{1,2}\d{1,2}.{1,2}\d{1,2}|\d{1,2}.{1,2}20\d\d.{1,2}\d{1,2}|\d{1,2}.{1,2}\d{1,2}.{1,2}20\d\d).*");
             Match dateMatch = dateReg.Match(content);
             if(dateMatch.Success)
             {
